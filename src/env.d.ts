@@ -5,7 +5,7 @@ interface ImportMetaEnv {
   readonly DEV: boolean;
   readonly PROD: boolean;
   readonly VITE_API_URL: string;
-  readonly VITE_OPENAI_API_KEY: string;
+  readonly OPENAI_API_KEY: string;
   readonly VITE_ERROR_LOGGING_ENDPOINT: string;
   readonly VITE_ENABLE_ANALYTICS: string;
   readonly VITE_ENABLE_ERROR_REPORTING: string;
