@@ -22,7 +22,7 @@ export const env = {
   API_URL: getEnvVar('VITE_API_URL', 'http://localhost:3001'),
   
   // OpenAI Configuration
-  OPENAI_API_KEY: getEnvVar('VITE_OPENAI_API_KEY'),
+  OPENAI_API_KEY: getEnvVar('OPENAI_API_KEY'),
   
   // Error Logging
   ERROR_LOGGING_ENDPOINT: getEnvVar(
@@ -40,7 +40,7 @@ export type Env = typeof env;
 
 // Validate required environment variables
 const validateEnv = () => {
-  const requiredVars = ['VITE_OPENAI_API_KEY'] as const;
+  const requiredVars = ['OPENAI_API_KEY'] as const;
   const missing = requiredVars.filter(
     (key) => !import.meta.env[key]
   );

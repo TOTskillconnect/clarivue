@@ -23,8 +23,7 @@ export function JDImportPage() {
   const handleJDSubmit = async (input: JDInput) => {
     try {
       setIsAnalyzing(true);
-      // TODO: Replace with actual API call
-      const response = await fetch('/api/analyze-jd', {
+      const response = await fetch('/api/criteria/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(input),
@@ -49,8 +48,7 @@ export function JDImportPage() {
   const handleSaveCriteria = async () => {
     try {
       setIsSaving(true);
-      // TODO: Replace with actual API call
-      const response = await fetch('/api/save-criteria', {
+      const response = await fetch('/api/criteria', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ criteria }),
