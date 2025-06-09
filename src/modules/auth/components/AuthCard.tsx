@@ -61,7 +61,7 @@ export const AuthCard: React.FC<AuthCardProps> = ({ onEmailSignup, onOAuthClick 
             />
             <Button 
               type="submit"
-              className="w-full bg-[#7FDCD7] hover:bg-[#04ADA4] text-white"
+              className="w-full clarivue-button-primary"
             >
               Sign up
             </Button>

@@ -2,24 +2,27 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@/test/utils';
 import userEvent from '@testing-library/user-event';
 import { PreviewDialog } from '../PreviewDialog';
+import { Criterion } from '@/types/hiring';
 
-const mockCriteria = [
+const mockCriteria: Criterion[] = [
   {
-    id: 'test-1',
-    label: 'Technical Skills',
-    description: 'Strong programming background',
-    synonyms: ['coding', 'development'],
-    weight: 4,
-    isFromJD: true,
-  },
-  {
-    id: 'test-2',
-    label: 'Communication',
-    description: 'Excellent verbal and written skills',
-    synonyms: ['interpersonal', 'articulate'],
+    id: '1',
+    label: 'Test Criterion 1',
+    description: 'Test Description 1',
+    synonyms: ['test1', 'test2'],
     weight: 3,
-    isFromJD: false,
+    isFromJD: true,
+    required: false
   },
+  {
+    id: '2',
+    label: 'Test Criterion 2',
+    description: 'Test Description 2',
+    synonyms: ['test3', 'test4'],
+    weight: 2,
+    isFromJD: false,
+    required: true
+  }
 ];
 
 describe('PreviewDialog', () => {

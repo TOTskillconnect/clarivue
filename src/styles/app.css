@@ -1,0 +1,188 @@
+/* Base Gradients */
+.clarivue-gradient {
+  background: linear-gradient(135deg, #7FDCD7 0%, #ACBAFF 100%);
+}
+
+.clarivue-gradient-subtle {
+  background: linear-gradient(135deg, rgba(127, 220, 215, 0.1) 0%, rgba(172, 186, 255, 0.1) 100%);
+}
+
+/* Cards */
+.clarivue-card {
+  background: white;
+  border: 1px solid rgba(172, 186, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(172, 186, 255, 0.15);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.clarivue-card:hover {
+  box-shadow: 0 8px 32px rgba(172, 186, 255, 0.25);
+}
+
+/* Headers */
+.clarivue-header {
+  background: linear-gradient(135deg, rgba(127, 220, 215, 0.1) 0%, rgba(172, 186, 255, 0.1) 100%);
+  border-bottom: 1px solid rgba(127, 220, 215, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Buttons */
+.clarivue-button-primary {
+  background: #7FDCD7;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.clarivue-button-primary:hover {
+  background: #04ADA4;
+}
+
+.clarivue-button-secondary {
+  background: #ACBAFF;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.clarivue-button-secondary:hover {
+  background: #8B9BFF;
+}
+
+.clarivue-button-outline-primary {
+  border: 1px solid #7FDCD7;
+  color: #7FDCD7;
+  transition: all 0.2s ease;
+}
+
+.clarivue-button-outline-primary:hover {
+  background: #7FDCD7;
+  color: white;
+}
+
+.clarivue-button-outline-secondary {
+  border: 1px solid #ACBAFF;
+  color: #ACBAFF;
+  transition: all 0.2s ease;
+}
+
+.clarivue-button-outline-secondary:hover {
+  background: #ACBAFF;
+  color: white;
+}
+
+/* Navigation */
+.clarivue-nav-link {
+  color: #7FDCD7;
+  transition: all 0.2s ease;
+}
+
+.clarivue-nav-link:hover {
+  color: #04ADA4;
+}
+
+.clarivue-nav-link.active {
+  color: #04ADA4;
+  font-weight: 500;
+}
+
+/* Form Elements */
+.clarivue-input {
+  border: 1px solid rgba(172, 186, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.clarivue-input:focus {
+  border-color: #7FDCD7;
+  box-shadow: 0 0 0 2px rgba(127, 220, 215, 0.2);
+}
+
+.clarivue-textarea {
+  border: 1px solid rgba(172, 186, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.clarivue-textarea:focus {
+  border-color: #7FDCD7;
+  box-shadow: 0 0 0 2px rgba(127, 220, 215, 0.2);
+}
+
+/* Loading States */
+.clarivue-loading {
+  background: linear-gradient(135deg, #7FDCD7 0%, #ACBAFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Tables */
+.clarivue-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.clarivue-table th {
+  background: linear-gradient(135deg, rgba(127, 220, 215, 0.1) 0%, rgba(172, 186, 255, 0.1) 100%);
+  color: #04ADA4;
+  font-weight: 500;
+  text-align: left;
+  padding: 1rem;
+}
+
+.clarivue-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(172, 186, 255, 0.1);
+}
+
+.clarivue-table tr:hover td {
+  background: rgba(127, 220, 215, 0.05);
+}
+
+/* Status Indicators */
+.clarivue-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.clarivue-status-success {
+  background: rgba(127, 220, 215, 0.1);
+  color: #04ADA4;
+}
+
+.clarivue-status-warning {
+  background: rgba(255, 171, 64, 0.1);
+  color: #FF6B00;
+}
+
+.clarivue-status-error {
+  background: rgba(255, 86, 86, 0.1);
+  color: #FF5656;
+}
+
+/* Shadows */
+.clarivue-shadow-sm {
+  box-shadow: 0 2px 8px rgba(172, 186, 255, 0.1);
+}
+
+.clarivue-shadow {
+  box-shadow: 0 4px 24px rgba(172, 186, 255, 0.15);
+}
+
+.clarivue-shadow-lg {
+  box-shadow: 0 8px 32px rgba(172, 186, 255, 0.25);
+} 

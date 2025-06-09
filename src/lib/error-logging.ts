@@ -1,3 +1,5 @@
+import { config } from './config';
+
 interface ErrorMetadata {
   componentStack?: string;
   userId?: string;
@@ -17,7 +19,7 @@ class ErrorLoggingService {
   private readonly endpoint: string;
 
   private constructor() {
-    this.endpoint = process.env.ERROR_LOGGING_ENDPOINT || '/api/logs/error';
+    this.endpoint = '/api/logs/error';
   }
 
   public static getInstance(): ErrorLoggingService {
@@ -40,13 +42,13 @@ class ErrorLoggingService {
 
     try {
       // In development, log to console
-      if (process.env.NODE_ENV === 'development') {
+      if (config.isDevelopment) {
         console.error('Error logged:', errorLog);
         return;
       }
 
       // In production, send to logging service
-      const response = await fetch(this.endpoint, {
+      const response = await fetch(`${config.apiUrl}${this.endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

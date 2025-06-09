@@ -58,8 +58,8 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
         <div className="sticky top-8 space-y-8">
           {/* Logo */}
           <div className="flex items-center gap-2 mb-12">
-            <div className="w-8 h-8 rounded-full bg-[#7FDCD7]/20 flex items-center justify-center">
-              <span className="text-[#04ADA4] text-xl">✨</span>
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+              <img src="/clarivue_logo_transparent.png" alt="Clarivue" className="h-6 w-6" />
             </div>
             <span className="font-semibold text-lg">Clarivue</span>
           </div>
@@ -108,8 +108,8 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
         <div className="lg:hidden p-4 border-b">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#7FDCD7]/20 flex items-center justify-center">
-                <span className="text-[#04ADA4] text-xl">✨</span>
+              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <img src="/clarivue_logo_transparent.png" alt="Clarivue" className="h-6 w-6" />
               </div>
               <span className="font-semibold">Clarivue</span>
             </div>

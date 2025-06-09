@@ -4,10 +4,15 @@ import { DashboardLayout } from '@/modules/dashboard/layouts/DashboardLayout';
 import { TeamDashboard } from '@/modules/team/pages/TeamDashboard';
 import { ReportsOverview } from '@/modules/report/pages/ReportsOverview';
 import { JDImportPage } from '@/modules/hiring/pages/JDImportPage';
-import { NewInterviewFlow } from '@/modules/interview/pages/NewInterviewFlow';
-import { InterviewsOverview } from '@/modules/interview/pages/InterviewsOverview';
-import { InterviewDetails } from '@/modules/interview/pages/InterviewDetails';
-import { HiringCriteriaFlow } from '@/modules/hiring/pages/HiringCriteriaFlow';
+import { ScorecardOverview } from '@/modules/scorecard/pages/ScorecardOverview';
+import { ScorecardDetails } from '@/modules/scorecard/pages/ScorecardDetails';
+import { ScorecardFlow } from '@/modules/scorecards/pages/ScorecardFlow';
+import { SetupScorecard } from '@/modules/scorecard/pages/SetupScorecard';
+import { ScorecardPage } from '@/modules/hiring/pages/ScorecardPage';
+import { HiringLayout } from '@/modules/hiring/layouts/HiringLayout';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { InterviewReportPage } from '@/modules/report/pages/InterviewReportPage';
+import { InterviewSetupFlow } from '@/modules/interviews/pages/InterviewSetupFlow';
 
 export const router = createBrowserRouter([
   {
@@ -17,52 +22,87 @@ export const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <DashboardLayout />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,
         element: <DashboardHome />
       },
       {
-        path: 'interviews',
+        path: 'scorecards',
         children: [
           {
             index: true,
-            element: <InterviewsOverview />
+            element: <ScorecardOverview />
           },
           {
             path: 'new',
-            element: <HiringCriteriaFlow />
+            element: <ScorecardFlow />
           },
           {
-            path: 'schedule/:criteriaId',
-            element: <NewInterviewFlow />
+            path: 'setup/:criteriaId?',
+            element: <SetupScorecard />
           },
           {
-            path: ':interviewId',
-            element: <InterviewDetails />
+            path: ':scorecardId',
+            element: <ScorecardDetails />
+          }
+        ]
+      },
+      {
+        path: 'interviews',
+        children: [
+          {
+            path: 'new',
+            element: <InterviewSetupFlow />
           }
         ]
       },
       {
         path: 'reports',
-        element: <ReportsOverview />
+        children: [
+          {
+            index: true,
+            element: <ReportsOverview />
+          },
+          {
+            path: ':reportId',
+            element: <InterviewReportPage />
+          }
+        ]
       },
       {
         path: 'team',
         element: <TeamDashboard />
       },
       {
-        path: 'hiring/criteria',
-        element: <JDImportPage />
-      },
-      {
-        path: 'hiring/roles/:roleId',
-        element: <div>Role Details</div>
+        path: 'hiring',
+        element: <HiringLayout />,
+        errorElement: <ErrorBoundary />,
+        children: [
+          {
+            path: 'criteria',
+            element: <JDImportPage />
+          },
+          {
+            path: 'scorecard/new',
+            element: <ScorecardPage />
+          },
+          {
+            path: 'scorecard/:scorecardId',
+            element: <ScorecardPage />
+          },
+          {
+            path: 'roles/:roleId',
+            element: <div>Role Details</div>
+          }
+        ]
       }
     ]
   },
   {
     path: '/hiring/jd-import',
     element: <JDImportPage />,
+    errorElement: <ErrorBoundary />,
   },
 ]); 

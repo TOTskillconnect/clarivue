@@ -163,7 +163,7 @@ export const SetupChecklistCard: React.FC<SetupChecklistCardProps> = ({
   return (
     <div className={cn(
       "bg-card rounded-lg border p-6",
-      isOnboardingComplete && "bg-[#7FDCD7]/10"
+      isOnboardingComplete && "clarivue-gradient-subtle"
     )}>
       <h3 className="font-semibold mb-4">
         {isOnboardingComplete ? 'Setup Complete!' : 'Finish setting up your account'}

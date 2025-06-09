@@ -72,7 +72,7 @@ export const TeamMembersTable: React.FC<TeamMembersTableProps> = ({
         return (
           <div className="flex items-center gap-3">
             <Avatar>
-              <AvatarImage src={`/avatars/${member.id}.png`} />
+              <AvatarImage src="/brand/clarivue_logo_transparent.png" />
               <AvatarFallback>
                 {member.name.split(' ').map((n: string) => n[0]).join('')}
               </AvatarFallback>

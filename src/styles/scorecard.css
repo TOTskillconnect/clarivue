@@ -1,0 +1,80 @@
+.scorecard-gradient {
+  background: linear-gradient(135deg, #7FDCD7 0%, #ACBAFF 100%);
+}
+
+.scorecard-card {
+  background: white;
+  border: 1px solid rgba(172, 186, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(172, 186, 255, 0.15);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.scorecard-card:hover {
+  box-shadow: 0 8px 32px rgba(172, 186, 255, 0.25);
+}
+
+.scorecard-header {
+  background: linear-gradient(135deg, rgba(127, 220, 215, 0.1) 0%, rgba(172, 186, 255, 0.1) 100%);
+  border-bottom: 1px solid rgba(127, 220, 215, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px 12px 0 0;
+}
+
+.scorecard-button-primary {
+  background: #7FDCD7;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.scorecard-button-primary:hover {
+  background: #04ADA4;
+}
+
+.scorecard-button-secondary {
+  background: #ACBAFF;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.scorecard-button-secondary:hover {
+  background: #8B9BFF;
+}
+
+.scorecard-back {
+  color: #CBA3EB;
+  transition: all 0.2s ease;
+}
+
+.scorecard-back:hover {
+  color: #B384D9;
+}
+
+.scorecard-category {
+  border: 1px solid rgba(127, 220, 215, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.scorecard-category:hover {
+  border-color: #7FDCD7;
+}
+
+.scorecard-loading {
+  background: linear-gradient(135deg, #7FDCD7 0%, #ACBAFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+} 

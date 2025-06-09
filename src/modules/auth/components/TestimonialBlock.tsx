@@ -35,7 +35,11 @@ export const TestimonialBlock: React.FC<TestimonialBlockProps> = ({
             className="w-12 h-12 rounded-full object-cover"
           />
         ) : (
-          <div className="w-12 h-12 rounded-full bg-border" />
+          <img 
+            src="/brand/clarivue_logo_transparent.png"
+            alt="Clarivue"
+            className="w-12 h-12 rounded-full"
+          />
         )}
         <div>
           <p className="font-medium text-text-primary">{author.name}</p>

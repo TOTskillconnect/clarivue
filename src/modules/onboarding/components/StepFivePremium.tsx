@@ -49,14 +49,14 @@ export const StepFivePremium: React.FC<StepFiveProps> = ({
       </div>
 
       {/* Current Minutes Card */}
-      <Card className="p-6 bg-gradient-to-r from-[#7FDCD7]/20 to-[#04ADA4]/10">
+      <Card className="p-6 clarivue-gradient-subtle">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#7FDCD7]/20 flex items-center justify-center">
-            <Clock className="w-6 h-6 text-[#04ADA4]" />
+          <div className="w-12 h-12 rounded-full clarivue-gradient-subtle flex items-center justify-center">
+            <Clock className="w-6 h-6 clarivue-nav-link" />
           </div>
           <div>
             <div className="text-sm text-muted-foreground">You currently have</div>
-            <div className="text-2xl font-semibold text-[#04ADA4]">60 Free Minutes</div>
+            <div className="text-2xl font-semibold clarivue-nav-link">60 Free Minutes</div>
           </div>
         </div>
       </Card>

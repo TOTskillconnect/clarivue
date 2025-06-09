@@ -51,7 +51,7 @@ export const SignupScreen: React.FC = () => {
         <div className="relative w-full max-w-md">
           {/* Logo */}
           <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 inline-flex items-center gap-2 mb-8 shadow-sm hover:shadow-md transition-shadow">
-            <Sparkles className="w-5 h-5 text-primary" />
+            <img src="/clarivue_logo_transparent.png" alt="Clarivue" className="h-6 w-6" />
             <h1 className="text-text-primary font-semibold text-xl">Clarivue</h1>
           </div>
 

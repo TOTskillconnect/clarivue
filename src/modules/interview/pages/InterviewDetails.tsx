@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, ExternalLink, Calendar, Mail } from 'lucide-react';
 import { format } from 'date-fns';
-import { type Interview, type InterviewCriteria } from '@/types/interview';
+import { type Interview, type Scorecard } from '@/types/interview';
+import { scorecardService } from '@/lib/api/services/scorecard';
 
 export function InterviewDetails() {
   const { interviewId } = useParams();
   const navigate = useNavigate();
   const [interview, setInterview] = useState<Interview | null>(null);
-  const [criteria, setCriteria] = useState<InterviewCriteria | null>(null);
+  const [scorecard, setScorecard] = useState<Scorecard | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -19,22 +20,21 @@ export function InterviewDetails() {
       try {
         setIsLoading(true);
         // TODO: Replace with actual API calls
-        const [interviewRes, criteriaRes] = await Promise.all([
+        const [interviewRes, scorecardRes] = await Promise.all([
           fetch(`/api/interviews/${interviewId}`),
-          fetch(`/api/criteria/${interview?.criteriaId}`),
+          interview?.scorecardId ? scorecardService.getById(interview.scorecardId) : Promise.resolve(null),
         ]);
 
-        if (!interviewRes.ok || !criteriaRes.ok) {
+        if (!interviewRes.ok) {
           throw new Error('Failed to load interview details');
         }
 
-        const [interviewData, criteriaData] = await Promise.all([
-          interviewRes.json(),
-          criteriaRes.json(),
-        ]);
-
+        const interviewData = await interviewRes.json();
         setInterview(interviewData);
-        setCriteria(criteriaData);
+
+        if (scorecardRes) {
+          setScorecard(scorecardRes.data);
+        }
       } catch (error) {
         console.error('Failed to load interview details:', error);
       } finally {
@@ -45,7 +45,7 @@ export function InterviewDetails() {
     if (interviewId) {
       loadInterview();
     }
-  }, [interviewId, interview?.criteriaId]);
+  }, [interviewId, interview?.scorecardId]);
 
   const getStatusColor = (status: Interview['status']) => {
     switch (status) {
@@ -147,21 +147,22 @@ export function InterviewDetails() {
           </CardContent>
         </Card>
 
-        {criteria && (
+        {scorecard && (
           <Card>
             <CardHeader>
-              <CardTitle>Hiring Criteria</CardTitle>
+              <CardTitle>Interview Scorecard</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <h3 className="font-medium">{criteria.title}</h3>
+                <h3 className="font-medium">{scorecard.title}</h3>
                 <div className="space-y-2">
-                  {criteria.criteria.map((criterion, index) => (
+                  {scorecard.metrics.map((metric, index) => (
                     <div
                       key={index}
                       className="p-3 bg-muted rounded-lg text-sm"
                     >
-                      {criterion.description}
+                      <div className="font-medium">{metric.name}</div>
+                      <p className="text-muted-foreground mt-1">{metric.description}</p>
                     </div>
                   ))}
                 </div>

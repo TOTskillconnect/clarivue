@@ -1,106 +1,114 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
+import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
 import { type InterviewFormData } from '@/types/interview';
 
 interface Props {
-  formData: InterviewFormData;
-  onChange: (data: InterviewFormData) => void;
-  onSubmit: () => void;
-  onBack: () => void;
   isLoading?: boolean;
+  onSubmit: (data: Pick<InterviewFormData, 'scheduledFor' | 'meetingLink'>) => void;
+  onBack: () => void;
 }
 
-export function ScheduleInterview({
-  formData,
-  onChange,
-  onSubmit,
-  onBack,
-  isLoading,
-}: Props) {
+export function ScheduleInterview({ isLoading, onSubmit, onBack }: Props) {
+  const [formData, setFormData] = useState<{
+    scheduledFor: Date | undefined;
+    meetingLink: string;
+    error?: string;
+  }>({
+    scheduledFor: undefined,
+    meetingLink: '',
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit();
+    
+    try {
+      if (!formData.scheduledFor) {
+        setFormData(prev => ({ ...prev, error: 'Please select a date' }));
+        return;
+      }
+
+      // Clear any previous errors
+      setFormData(prev => ({ ...prev, error: undefined }));
+
+      // Validate meeting link if provided
+      if (formData.meetingLink && !isValidUrl(formData.meetingLink)) {
+        setFormData(prev => ({ ...prev, error: 'Please enter a valid meeting link' }));
+        return;
+      }
+
+      onSubmit({
+        scheduledFor: formData.scheduledFor.toISOString(),
+        meetingLink: formData.meetingLink,
+      });
+    } catch (error) {
+      setFormData(prev => ({ ...prev, error: 'An error occurred. Please try again.' }));
+    }
   };
 
-  const handleDateSelect = (date: Date | undefined) => {
-    onChange({
-      ...formData,
-      scheduledFor: date || null,
-    });
+  const isValidUrl = (url: string) => {
+    try {
+      if (!url) return true; // Empty URL is valid as it's optional
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex items-center">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label>Interview Date</Label>
+          <div className="border rounded-lg p-4">
+            <DayPicker
+              mode="single"
+              selected={formData.scheduledFor}
+              onSelect={(date) => setFormData(prev => ({ ...prev, scheduledFor: date || undefined, error: undefined }))}
+              disabled={{ before: new Date() }}
+              showOutsideDays
+              className="mx-auto"
+            />
+          </div>
+          {formData.scheduledFor && (
+            <p className="text-sm text-muted-foreground">
+              Selected date: {format(formData.scheduledFor, 'PPP')}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="meetingLink">Meeting Link</Label>
+          <Input
+            id="meetingLink"
+            value={formData.meetingLink}
+            onChange={(e) => setFormData(prev => ({ ...prev, meetingLink: e.target.value, error: undefined }))}
+            placeholder="Enter meeting link (optional)"
+            className={formData.error && formData.meetingLink ? 'border-red-500' : ''}
+          />
+        </div>
+
+        {formData.error && (
+          <p className="text-sm text-red-500">{formData.error}</p>
+        )}
+      </div>
+
+      <div className="flex justify-between">
         <Button
           type="button"
           variant="ghost"
-          size="sm"
           onClick={onBack}
+          disabled={isLoading}
         >
-          <ChevronLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
-      </div>
-
-      <div className="space-y-4">
-        <div className="grid gap-4">
-          <div className="space-y-2">
-            <Label>Interview Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    'w-full justify-start text-left font-normal',
-                    !formData.scheduledFor && 'text-muted-foreground'
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {formData.scheduledFor ? (
-                    format(formData.scheduledFor, 'PPP')
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={formData.scheduledFor || undefined}
-                  onSelect={handleDateSelect}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="meetingLink">Meeting Link</Label>
-            <Input
-              id="meetingLink"
-              type="url"
-              value={formData.meetingLink}
-              onChange={(e) =>
-                onChange({ ...formData, meetingLink: e.target.value })
-              }
-              placeholder="Enter video call link (e.g., Zoom, Google Meet)"
-              required
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-end">
         <Button
           type="submit"
-          disabled={!formData.scheduledFor || !formData.meetingLink || isLoading}
+          disabled={!formData.scheduledFor || isLoading}
         >
           {isLoading ? 'Scheduling...' : 'Schedule Interview'}
         </Button>

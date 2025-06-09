@@ -5,6 +5,8 @@ import { TeamUsageCard } from '../components/TeamUsageCard';
 import { ProUsageCard } from '../components/ProUsageCard';
 import { TeamMembersTable } from '../components/TeamMembersTable';
 import { useTeamManagement } from '../hooks/useTeamManagement';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SetupInterviewButton } from '@/components/ui/setup-interview-button';
 
 export const TeamDashboard: React.FC = () => {
   const {
@@ -25,7 +27,47 @@ export const TeamDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto py-6 space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Team</h1>
+        <div className="flex gap-3">
+          <SetupInterviewButton />
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Invite Team Member
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Members</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Add team members list */}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Add recent activity list */}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Stats</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Add team stats */}
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Usage Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <TeamUsageCard onInvite={handleInvite} />

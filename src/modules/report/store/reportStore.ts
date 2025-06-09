@@ -45,6 +45,95 @@ const mockReports: Report[] = [
       alignmentScore: 0.9,
       riskLevel: 'low',
     },
+    candidate: {
+      name: 'Sarah Chen',
+      role: 'Senior Frontend Developer',
+      avatar: 'https://ui-avatars.com/api/?name=Sarah+Chen',
+      experience: '8+ years in frontend development',
+      location: 'San Francisco, CA',
+      education: 'MS Computer Science, Stanford University',
+    },
+    synopsis: 'Sarah demonstrated exceptional technical expertise in React and modern frontend architecture. Her experience leading teams and mentoring junior developers aligns well with our needs. She showed strong problem-solving skills during the system design discussion.',
+    strengths: [
+      'Deep expertise in React and TypeScript',
+      'Strong system design and architecture skills',
+      'Proven leadership experience',
+      'Excellent communication skills',
+      'Active open source contributor'
+    ],
+    concerns: [
+      'Limited experience with our specific tech stack',
+      'May need time to adapt to our development processes',
+      'Higher salary expectations'
+    ],
+    overallScore: 85,
+    wordCloudData: [
+      { text: 'React', value: 100, relevance: 0.9 },
+      { text: 'TypeScript', value: 85, relevance: 0.85 },
+      { text: 'Leadership', value: 75, relevance: 0.8 },
+      { text: 'Architecture', value: 70, relevance: 0.75 },
+      { text: 'Testing', value: 65, relevance: 0.7 },
+      { text: 'Performance', value: 60, relevance: 0.65 },
+      { text: 'Mentoring', value: 55, relevance: 0.6 },
+      { text: 'Communication', value: 50, relevance: 0.55 }
+    ],
+    scorecardCriteria: [
+      {
+        id: 'tech-1',
+        criterion: 'Frontend Development',
+        category: 'Technical Skills',
+        score: 4.5,
+        weight: 0.3,
+        explanation: 'Excellent knowledge of React, TypeScript, and modern frontend practices.'
+      },
+      {
+        id: 'tech-2',
+        criterion: 'System Design',
+        category: 'Technical Skills',
+        score: 4.0,
+        weight: 0.2,
+        explanation: 'Strong understanding of scalable architecture and performance optimization.'
+      },
+      {
+        id: 'soft-1',
+        criterion: 'Leadership',
+        category: 'Soft Skills',
+        score: 4.0,
+        weight: 0.25,
+        explanation: 'Demonstrated experience leading teams and mentoring junior developers.'
+      },
+      {
+        id: 'soft-2',
+        criterion: 'Communication',
+        category: 'Soft Skills',
+        score: 4.5,
+        weight: 0.25,
+        explanation: 'Clear and articulate communication, both technical and non-technical.'
+      }
+    ],
+    transcript: [
+      {
+        timestamp: '00:00',
+        speaker: 'Interviewer',
+        text: 'Could you walk us through your experience with React and modern frontend development?'
+      },
+      {
+        timestamp: '00:45',
+        speaker: 'Sarah',
+        text: 'I\'ve been working with React for the past 6 years, starting with class components and seeing the evolution to hooks and modern patterns. In my current role, I\'ve led the migration of a large-scale application from a legacy framework to React with TypeScript.'
+      },
+      {
+        timestamp: '02:15',
+        speaker: 'Interviewer',
+        text: 'Can you tell us about a challenging technical problem you\'ve solved recently?'
+      },
+      {
+        timestamp: '03:00',
+        speaker: 'Sarah',
+        text: 'Recently, I tackled a performance issue in our application where the main dashboard was taking too long to load. I implemented a combination of code splitting, virtualization for long lists, and strategic data fetching which reduced the initial load time by 60%.'
+      }
+    ],
+    transcriptWordCount: 1250
   },
   {
     id: '2',

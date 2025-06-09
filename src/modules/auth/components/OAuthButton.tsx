@@ -10,11 +10,11 @@ interface OAuthButtonProps {
 export const OAuthButton: React.FC<OAuthButtonProps> = ({ provider, onClick }) => {
   const providerData = {
     google: {
-      icon: '/google-icon.svg',
+      icon: '/brand/clarivue_logo_transparent.png',
       text: 'Continue with Google'
     },
     microsoft: {
-      icon: '/microsoft-icon.svg',
+      icon: '/brand/clarivue_logo_transparent.png',
       text: 'Continue with Microsoft'
     }
   };

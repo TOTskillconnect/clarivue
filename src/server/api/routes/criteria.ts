@@ -1,13 +1,11 @@
-import { Router, type Request, type Response, type RequestHandler } from 'express';
-import { analyzeJobDescription as analyzeJDWithAI } from '../openai';
-import { type HiringCriteria } from '@/types/hiring';
+import { Router, Request, Response } from 'express';
+import { analyzeJobDescription as analyze } from '../../services/openai';
+import { criteriaStore } from '../../store/criteria';
+import type { Criterion, JDInput } from '../../../types/hiring';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
 const router = Router();
-
-// In-memory store for demo purposes
-const criteriaStore = new Map<string, HiringCriteria>();
 
 interface AnalysisRequest {
   url?: string;
@@ -76,105 +74,73 @@ async function extractTextFromUrl(url: string): Promise<string> {
   }
 }
 
-// Create new criteria
-const createCriteria: RequestHandler = async (req, res) => {
+const createCriteria = async (req: Request, res: Response) => {
   try {
-    const criteria = req.body as HiringCriteria;
-    const id = Math.random().toString(36).substring(2, 10);
-    const newCriteria = {
-      ...criteria,
-      id,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    
-    criteriaStore.set(id, newCriteria);
-    return res.status(201).json(newCriteria);
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to create criteria' });
+    const criteria = criteriaStore.create(req.body);
+    res.status(201).json(criteria);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(400).json({ error: message });
   }
 };
 
-// Get all criteria
-const getAllCriteria: RequestHandler = (_req, res) => {
-  const criteria = Array.from(criteriaStore.values());
-  return res.json(criteria);
-};
-
-// Get criteria by ID
-const getCriteriaById: RequestHandler<{ id: string }> = (req, res) => {
-  const criteria = criteriaStore.get(req.params.id);
-  if (!criteria) {
-    return res.status(404).json({ error: 'Criteria not found' });
-  }
-  return res.json(criteria);
-};
-
-// Update criteria
-const updateCriteria: RequestHandler<{ id: string }> = (req, res) => {
-  const id = req.params.id;
-  const existing = criteriaStore.get(id);
-  
-  if (!existing) {
-    return res.status(404).json({ error: 'Criteria not found' });
-  }
-  
-  const updated = {
-    ...req.body,
-    id,
-    createdAt: existing.createdAt,
-    updatedAt: new Date().toISOString()
-  };
-  
-  criteriaStore.set(id, updated);
-  return res.json(updated);
-};
-
-// Delete criteria
-const deleteCriteria: RequestHandler<{ id: string }> = (req, res) => {
-  const deleted = criteriaStore.delete(req.params.id);
-  if (!deleted) {
-    return res.status(404).json({ error: 'Criteria not found' });
-  }
-  return res.status(204).send();
-};
-
-// Analyze job description from URL or text
-const analyzeJobDescription: RequestHandler = async (req, res) => {
+const getAllCriteria = (_req: Request, res: Response) => {
   try {
-    const { url, text } = req.body as AnalysisRequest;
-    
-    if (!url && !text) {
-      return res.status(400).json({ error: 'Either URL or text must be provided' });
-    }
-
-    let jobText: string;
-    
-    if (url) {
-      try {
-        jobText = await extractTextFromUrl(url);
-      } catch (error) {
-        if (error instanceof Error) {
-          return res.status(400).json({ error: error.message });
-        }
-        return res.status(500).json({ error: 'Failed to fetch job description from URL' });
-      }
-    } else {
-      jobText = text!;
-    }
-
-    const analysis = await analyzeJDWithAI(jobText);
-    return res.json({
-      ...analysis,
-      source: url ? { type: 'url', url } : { type: 'text' }
-    });
-  } catch (error) {
-    console.error('Error analyzing job description:', error);
-    return res.status(500).json({ error: 'Failed to analyze job description' });
+    const criteria = criteriaStore.getAll();
+    res.json(criteria);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(500).json({ error: message });
   }
 };
 
-// Register routes
+const getCriteriaById = (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const criteria = criteriaStore.getById(req.params.id);
+    if (!criteria) {
+      return res.status(404).json({ error: 'Criteria not found' });
+    }
+    res.json(criteria);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(500).json({ error: message });
+  }
+};
+
+const updateCriteria = (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const criteria = criteriaStore.update(req.params.id, req.body);
+    if (!criteria) {
+      return res.status(404).json({ error: 'Criteria not found' });
+    }
+    res.json(criteria);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(400).json({ error: message });
+  }
+};
+
+const deleteCriteria = (req: Request<{ id: string }>, res: Response) => {
+  try {
+    criteriaStore.delete(req.params.id);
+    res.status(204).send();
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(500).json({ error: message });
+  }
+};
+
+const analyzeJobDescription = async (req: Request, res: Response) => {
+  try {
+    const { text, url } = req.body as JDInput;
+    const result = await analyze(text, url);
+    res.json(result);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(500).json({ error: message });
+  }
+};
+
 router.post('/', createCriteria);
 router.get('/', getAllCriteria);
 router.get('/:id', getCriteriaById);

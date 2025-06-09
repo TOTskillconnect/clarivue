@@ -106,7 +106,7 @@ export const StepFourSetup: React.FC<StepFourProps> = ({
       <div className="pt-6">
         <Button
           onClick={onNext}
-          className="w-full bg-[#7FDCD7] hover:bg-[#04ADA4] text-white"
+          className="w-full clarivue-button-primary"
         >
           Continue
         </Button>

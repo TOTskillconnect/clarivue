@@ -8,32 +8,51 @@ const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 // Mock useNavigate
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => vi.fn(),
-  };
-});
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => mockNavigate
+}));
+
+// Mock sample response
+const mockAnalyzeResponse = {
+  job_title: 'Senior Software Engineer',
+  categories: [
+    {
+      name: 'Context Fit',
+      weight: 30,
+      criteria: [
+        {
+          id: '1',
+          name: 'Innovation Mindset',
+          weight: 15,
+          description: 'Demonstrates willingness to explore new solutions'
+        }
+      ]
+    }
+  ]
+};
 
 describe('JDImportPage', () => {
   beforeEach(() => {
     mockFetch.mockReset();
+    mockNavigate.mockReset();
   });
 
-  it('renders the initial job description input step', () => {
+  it('renders the initial job description input form', () => {
     render(<JDImportPage />);
     
     expect(screen.getByText('Import Job Description')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /analyze/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /paste/i })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /link/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/paste the job description/i)).toBeInTheDocument();
   });
 
-  it('shows loading state while analyzing', async () => {
+  it('shows loading state while analyzing JD', async () => {
     mockFetch.mockImplementationOnce(() => 
       new Promise(resolve => setTimeout(resolve, 100))
         .then(() => ({
           ok: true,
-          json: () => Promise.resolve({ criteria: [] }),
+          json: () => Promise.resolve(mockAnalyzeResponse)
         }))
     );
 
@@ -42,28 +61,17 @@ describe('JDImportPage', () => {
     const textarea = screen.getByPlaceholderText(/paste the job description/i);
     await userEvent.type(textarea, 'Test job description');
     
-    const analyzeButton = screen.getByRole('button', { name: /analyze/i });
-    await userEvent.click(analyzeButton);
+    const submitButton = screen.getByRole('button', { name: /analyze/i });
+    await userEvent.click(submitButton);
     
     expect(screen.getByText(/analyzing/i)).toBeInTheDocument();
   });
 
-  it('transitions to review step after successful analysis', async () => {
-    const mockCriteria = [
-      {
-        id: 'test-1',
-        label: 'Test Criterion',
-        description: 'Test description',
-        synonyms: ['test'],
-        weight: 3,
-        isFromJD: true,
-      },
-    ];
-
+  it('navigates to scorecard page with analyzed data on successful analysis', async () => {
     mockFetch.mockImplementationOnce(() => 
       Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({ criteria: mockCriteria }),
+        json: () => Promise.resolve(mockAnalyzeResponse)
       })
     );
 
@@ -72,20 +80,25 @@ describe('JDImportPage', () => {
     const textarea = screen.getByPlaceholderText(/paste the job description/i);
     await userEvent.type(textarea, 'Test job description');
     
-    const analyzeButton = screen.getByRole('button', { name: /analyze/i });
-    await userEvent.click(analyzeButton);
+    const submitButton = screen.getByRole('button', { name: /analyze/i });
+    await userEvent.click(submitButton);
     
     await waitFor(() => {
-      expect(screen.getByText('Review Criteria')).toBeInTheDocument();
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/dashboard/hiring/scorecard/new',
+        expect.objectContaining({
+          state: { analyzedData: mockAnalyzeResponse }
+        })
+      );
     });
-
-    expect(screen.getByText('Test Criterion')).toBeInTheDocument();
   });
 
   it('shows error toast on analysis failure', async () => {
     mockFetch.mockImplementationOnce(() => 
       Promise.resolve({
         ok: false,
+        status: 500,
+        statusText: 'Internal Server Error'
       })
     );
 
@@ -94,51 +107,33 @@ describe('JDImportPage', () => {
     const textarea = screen.getByPlaceholderText(/paste the job description/i);
     await userEvent.type(textarea, 'Test job description');
     
-    const analyzeButton = screen.getByRole('button', { name: /analyze/i });
-    await userEvent.click(analyzeButton);
+    const submitButton = screen.getByRole('button', { name: /analyze/i });
+    await userEvent.click(submitButton);
     
     await waitFor(() => {
       expect(screen.getByText(/failed to analyze/i)).toBeInTheDocument();
     });
+    
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  it('opens preview dialog when clicking review & save', async () => {
-    const mockCriteria = [
-      {
-        id: 'test-1',
-        label: 'Test Criterion',
-        description: 'Test description',
-        synonyms: ['test'],
-        weight: 3,
-        isFromJD: true,
-      },
-    ];
-
-    mockFetch
-      .mockImplementationOnce(() => 
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ criteria: mockCriteria }),
-        })
-      );
-
+  it('validates empty job description input', async () => {
     render(<JDImportPage />);
     
-    // First analyze JD
-    const textarea = screen.getByPlaceholderText(/paste the job description/i);
-    await userEvent.type(textarea, 'Test job description');
+    const submitButton = screen.getByRole('button', { name: /analyze/i });
+    await userEvent.click(submitButton);
     
-    const analyzeButton = screen.getByRole('button', { name: /analyze/i });
-    await userEvent.click(analyzeButton);
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('handles URL import tab switch', async () => {
+    render(<JDImportPage />);
     
-    await waitFor(() => {
-      expect(screen.getByText('Review Criteria')).toBeInTheDocument();
-    });
-
-    // Click review & save
-    const reviewButton = screen.getByRole('button', { name: /review & save/i });
-    await userEvent.click(reviewButton);
-
-    expect(screen.getByText('Review Hiring Criteria')).toBeInTheDocument();
+    const urlTab = screen.getByRole('tab', { name: /link/i });
+    await userEvent.click(urlTab);
+    
+    expect(screen.getByPlaceholderText(/https/i)).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/paste the job description/i)).not.toBeInTheDocument();
   });
 }); 

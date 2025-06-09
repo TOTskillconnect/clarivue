@@ -9,8 +9,8 @@ export interface Criterion {
 }
 
 export interface JDInput {
+  type: 'paste' | 'link';
   text: string;
-  url?: string;
 }
 
 export interface JDAnalysisResponse {

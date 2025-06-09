@@ -1,23 +1,27 @@
-import { ReactElement } from 'react';
-import { render } from '@testing-library/react';
+import { render as rtlRender } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { Toaster } from '@/components/ui/toaster';
+import { ScorecardProvider } from '@/contexts/ScorecardContext';
+import { vi } from 'vitest';
+
+// Mock Toaster component
+vi.mock('@/components/ui/toaster', () => ({
+  Toaster: () => null,
+}));
 
 function Providers({ children }: { children: React.ReactNode }) {
   return (
     <BrowserRouter>
-      {children}
-      <Toaster />
+      <ScorecardProvider>
+        {children}
+      </ScorecardProvider>
     </BrowserRouter>
   );
 }
 
-function renderWithProviders(ui: ReactElement) {
-  return render(ui, {
-    wrapper: Providers,
-  });
+function render(ui: React.ReactElement, options = {}) {
+  return rtlRender(ui, { wrapper: Providers, ...options });
 }
 
-// Re-export everything
+// re-export everything
 export * from '@testing-library/react';
-export { renderWithProviders as render }; 
+export { render }; 

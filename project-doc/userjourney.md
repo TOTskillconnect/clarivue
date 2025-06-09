@@ -2,6 +2,12 @@
 
 This document outlines the core user journey for the **Clarivue MVP**: an AI-powered co-pilot that joins interviews, takes notes, suggests live follow-up questions, and produces insightful post-call reports.
 
+GOAL
+OVERALL GOAL 
+user paste jd > backend takes jd and run through openai> openai generates context fit first scorecard(differentiator) > gets displayed to customer front end > customer edits or saves>> we use the scorecard to generate follow-up questions so it is streamlined to the goals) during live interview>> generates scorecard report after interview
+
+
+
 ---
 
 ## 👤 Primary User Persona

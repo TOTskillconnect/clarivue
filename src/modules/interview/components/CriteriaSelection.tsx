@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ChevronLeft, Plus } from 'lucide-react';
 import { type InterviewCriteria } from '@/types/interview';
+import { criteriaService } from '@/lib/api/services/criteria';
 
 interface Props {
   selectedId: string;
@@ -21,11 +22,14 @@ export function CriteriaSelection({ selectedId, onSelect, onBack }: Props) {
     const loadCriteria = async () => {
       try {
         setIsLoading(true);
-        // TODO: Replace with actual API call
-        const response = await fetch('/api/criteria');
-        if (!response.ok) throw new Error('Failed to load criteria');
-        const data = await response.json();
-        setCriteria(data);
+        const { data } = await criteriaService.getAll();
+        // Transform HiringCriteria to InterviewCriteria
+        const transformedData = data.map(item => ({
+          ...item,
+          createdAt: new Date(item.createdAt),
+          updatedAt: new Date(item.updatedAt),
+        }));
+        setCriteria(transformedData);
       } catch (error) {
         console.error('Failed to load criteria:', error);
       } finally {

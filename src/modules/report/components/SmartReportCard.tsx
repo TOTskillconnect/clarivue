@@ -15,30 +15,30 @@ export const SmartReportCard: React.FC<SmartReportCardProps> = ({
   report,
   onViewDetails,
 }) => {
-  const getTrendIcon = () => {
-    switch (report.trend) {
-      case 'up':
-        return <ArrowUpIcon className="h-4 w-4 text-emerald-500" />;
-      case 'down':
-        return <ArrowDownIcon className="h-4 w-4 text-red-500" />;
-      default:
-        return <MinusIcon className="h-4 w-4 text-gray-500" />;
-    }
-  };
-
   const getTypeColor = () => {
     switch (report.type) {
       case 'fit':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
+        return 'border-emerald-200 text-emerald-700';
       case 'risk':
-        return 'bg-orange-50 text-orange-700 border-orange-200';
+        return 'border-blue-200 text-blue-700';
       case 'alignment':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
-      case 'stage':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        return 'border-violet-200 text-violet-700';
       default:
-        return 'bg-gray-50 text-gray-700 border-gray-200';
+        return 'border-gray-200 text-gray-700';
     }
+  };
+
+  const getTrendIcon = () => {
+    if (!report.trend) return null;
+
+    const commonClasses = "h-4 w-4";
+    if (report.trend === 'up') {
+      return <ArrowUpIcon className={cn(commonClasses, "text-emerald-600")} />;
+    }
+    if (report.trend === 'down') {
+      return <ArrowDownIcon className={cn(commonClasses, "text-red-600")} />;
+    }
+    return <MinusIcon className={cn(commonClasses, "text-gray-400")} />;
   };
 
   const getMetricDisplay = () => {
@@ -48,35 +48,42 @@ export const SmartReportCard: React.FC<SmartReportCardProps> = ({
 
     if (confidenceScore !== undefined) {
       return (
-        <div className="text-2xl font-semibold">
-          {Math.round(confidenceScore * 100)}%
-          <span className="text-sm text-muted-foreground ml-1">confidence</span>
+        <div className="space-y-1">
+          <span className="text-2xl font-semibold text-gray-900">
+            {Math.round(confidenceScore * 100)}%
+          </span>
+          <span className="block text-sm text-gray-500">Confidence Score</span>
         </div>
       );
     }
 
     if (alignmentScore !== undefined) {
       return (
-        <div className="text-2xl font-semibold">
-          {Math.round(alignmentScore * 100)}%
-          <span className="text-sm text-muted-foreground ml-1">aligned</span>
+        <div className="space-y-1">
+          <span className="text-2xl font-semibold text-gray-900">
+            {Math.round(alignmentScore * 100)}%
+          </span>
+          <span className="block text-sm text-gray-500">Alignment Score</span>
         </div>
       );
     }
 
     if (riskLevel) {
       return (
-        <Badge
-          variant="outline"
-          className={cn(
-            "text-sm",
-            riskLevel === 'high' && "bg-red-50 text-red-700 border-red-200",
-            riskLevel === 'medium' && "bg-yellow-50 text-yellow-700 border-yellow-200",
-            riskLevel === 'low' && "bg-emerald-50 text-emerald-700 border-emerald-200"
-          )}
-        >
-          {riskLevel.toUpperCase()} RISK
-        </Badge>
+        <div className="space-y-1">
+          <Badge
+            variant="outline"
+            className={cn(
+              "text-sm",
+              riskLevel === 'high' && "bg-red-50 text-red-700 border-red-200",
+              riskLevel === 'medium' && "bg-yellow-50 text-yellow-700 border-yellow-200",
+              riskLevel === 'low' && "bg-emerald-50 text-emerald-700 border-emerald-200"
+            )}
+          >
+            {riskLevel.toUpperCase()} RISK
+          </Badge>
+          <span className="block text-sm text-gray-500">Risk Level</span>
+        </div>
       );
     }
 
@@ -85,7 +92,7 @@ export const SmartReportCard: React.FC<SmartReportCardProps> = ({
 
   return (
     <Card className={cn(
-      "transition-all duration-200 hover:shadow-md",
+      "glossy-card transition-all duration-200 hover:shadow-md",
       report.alert && "border-orange-300 bg-orange-50/30"
     )}>
       <CardHeader className="pb-2">
@@ -122,7 +129,7 @@ export const SmartReportCard: React.FC<SmartReportCardProps> = ({
           {/* Action */}
           <Button
             variant="ghost"
-            className="w-full justify-between hover:bg-transparent hover:text-blue-600"
+            className="gradient-btn w-full justify-between text-white"
             onClick={() => onViewDetails?.(report.id)}
           >
             View Details

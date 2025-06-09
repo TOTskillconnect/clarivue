@@ -1,15 +1,27 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@/test/utils';
 import userEvent from '@testing-library/user-event';
+import { Criterion } from '@/types/hiring';
 import { CriterionCard } from '../CriterionCard';
 
-const mockCriterion = {
-  id: 'test-1',
+const mockCriterion: Criterion = {
+  id: '1',
   label: 'Test Criterion',
-  description: 'Test description',
+  description: 'Test Description',
   synonyms: ['test1', 'test2'],
   weight: 3,
   isFromJD: true,
+  required: false
+};
+
+const nonJDCriterion: Criterion = {
+  id: '2',
+  label: 'Non JD Criterion',
+  description: 'Non JD Description',
+  synonyms: ['test3', 'test4'],
+  weight: 2,
+  isFromJD: false,
+  required: true
 };
 
 describe('CriterionCard', () => {
@@ -87,8 +99,6 @@ describe('CriterionCard', () => {
   });
 
   it('shows "From JD" badge only when isFromJD is true', () => {
-    const nonJDCriterion = { ...mockCriterion, isFromJD: false };
-    
     const { rerender } = render(
       <CriterionCard
         criterion={nonJDCriterion}

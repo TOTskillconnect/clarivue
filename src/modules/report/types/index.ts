@@ -14,13 +14,44 @@ export interface Report {
   id: string;
   title: string;
   description: string;
-  type: ReportType;
+  type: string;
   role: string;
   stage: string;
   createdBy: string;
   lastUpdated: Date;
+  interviewDate: Date;
   summary: string;
   tags: string[];
+  candidate: {
+    name: string;
+    role: string;
+    avatar?: string;
+    experience: string;
+    location: string;
+    education: string;
+  };
+  synopsis: string;
+  strengths: string[];
+  concerns: string[];
+  overallScore: number;
+  wordCloudData: Array<{
+    text: string;
+    value: number;
+    relevance: number;
+  }>;
+  scorecardCriteria: Array<{
+    id: string;
+    criterion: string;
+    category: string;
+    score: number;
+    weight: number;
+    explanation: string;
+  }>;
+  transcript: Array<{
+    timestamp: string;
+    speaker: string;
+    text: string;
+  }>;
   conversations: ConversationSnippet[];
   metrics?: {
     confidenceScore?: number;

@@ -89,18 +89,18 @@ export const StepThreeHelpFocus: React.FC<StepThreeProps> = ({
               key={area.id}
               className={cn(
                 "p-6 cursor-pointer transition-all hover:shadow-md relative overflow-hidden",
-                isSelected && "ring-2 ring-[#7FDCD7] bg-[#7FDCD7]/5"
+                isSelected && "ring-2 ring-primary clarivue-gradient-subtle"
               )}
               onClick={() => toggleArea(area.id)}
             >
               {isSelected && (
-                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#04ADA4] text-white flex items-center justify-center">
+                <div className="absolute top-2 right-2 w-6 h-6 rounded-full clarivue-button-primary flex items-center justify-center text-white">
                   ✓
                 </div>
               )}
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#7FDCD7]/20 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#04ADA4]" />
+                <div className="w-10 h-10 rounded-full clarivue-gradient-subtle flex items-center justify-center">
+                  <Icon className="w-5 h-5 clarivue-nav-link" />
                 </div>
                 <div>
                   <h3 className="font-medium">{area.title}</h3>

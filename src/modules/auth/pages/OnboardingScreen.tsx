@@ -22,7 +22,7 @@ export const OnboardingScreen: React.FC = () => {
           <div className="space-y-4 mb-6">
             <button className="w-full flex items-center justify-between px-6 py-3 border border-border rounded-lg hover:bg-surface transition-colors">
               <div className="flex items-center">
-                <img src="/google-icon.svg" alt="Google" className="w-5 h-5 mr-3" />
+                <img src="/brand/clarivue_logo_transparent.png" alt="Google" className="w-5 h-5 mr-3" />
                 <span className="text-text-primary">Continue with Google</span>
               </div>
               <span className="text-text-secondary">→</span>
@@ -30,7 +30,7 @@ export const OnboardingScreen: React.FC = () => {
 
             <button className="w-full flex items-center justify-between px-6 py-3 border border-border rounded-lg hover:bg-surface transition-colors">
               <div className="flex items-center">
-                <img src="/microsoft-icon.svg" alt="Microsoft" className="w-5 h-5 mr-3" />
+                <img src="/brand/clarivue_logo_transparent.png" alt="Microsoft" className="w-5 h-5 mr-3" />
                 <span className="text-text-primary">Continue with Microsoft</span>
               </div>
               <span className="text-text-secondary">→</span>
