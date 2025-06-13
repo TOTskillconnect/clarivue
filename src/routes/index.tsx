@@ -1,18 +1,35 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { DashboardHome } from '@/modules/dashboard/pages/DashboardHome';
 import { DashboardLayout } from '@/modules/dashboard/layouts/DashboardLayout';
-import { TeamDashboard } from '@/modules/team/pages/TeamDashboard';
-import { ReportsOverview } from '@/modules/report/pages/ReportsOverview';
-import { JDImportPage } from '@/modules/hiring/pages/JDImportPage';
-import { ScorecardOverview } from '@/modules/scorecard/pages/ScorecardOverview';
-import { ScorecardDetails } from '@/modules/scorecard/pages/ScorecardDetails';
-import { ScorecardFlow } from '@/modules/scorecards/pages/ScorecardFlow';
-import { SetupScorecard } from '@/modules/scorecard/pages/SetupScorecard';
-import { ScorecardPage } from '@/modules/hiring/pages/ScorecardPage';
-import { HiringLayout } from '@/modules/hiring/layouts/HiringLayout';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { InterviewReportPage } from '@/modules/report/pages/InterviewReportPage';
-import { InterviewSetupFlow } from '@/modules/interviews/pages/InterviewSetupFlow';
+import { ReportsOverviewPage } from '@/modules/reports/pages/ReportsOverviewPage';
+import { SummaryReportView } from '@/modules/report/pages/SummaryReportView';
+import { ScorecardsList } from '@/modules/scorecards/pages/ScorecardsList';
+import { NewScorecard } from '@/modules/scorecards/pages/NewScorecard';
+import { TeamMembersTable } from '@/modules/team/components/TeamMembersTable';
+import { useTeamManagement } from '@/modules/team/hooks/useTeamManagement';
+
+// Simple Team Overview Component
+function TeamOverview() {
+  const { activeMembers, updateMember, archiveMember } = useTeamManagement();
+  
+  return (
+    <div className="container mx-auto py-8">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Team Management</h1>
+          <p className="text-muted-foreground mt-2">
+            Manage your team members and their access
+          </p>
+        </div>
+      </div>
+      <TeamMembersTable 
+        members={activeMembers}
+        onUpdateMember={updateMember}
+        onRemoveMember={archiveMember}
+      />
+    </div>
+  );
+}
 
 export const router = createBrowserRouter([
   {
@@ -22,87 +39,55 @@ export const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <DashboardLayout />,
-    errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,
         element: <DashboardHome />
       },
       {
-        path: 'scorecards',
-        children: [
-          {
-            index: true,
-            element: <ScorecardOverview />
-          },
-          {
-            path: 'new',
-            element: <ScorecardFlow />
-          },
-          {
-            path: 'setup/:criteriaId?',
-            element: <SetupScorecard />
-          },
-          {
-            path: ':scorecardId',
-            element: <ScorecardDetails />
-          }
-        ]
+        path: 'interviews/:id',
+        element: <div>Interview Details (Coming Soon)</div>
       },
       {
-        path: 'interviews',
-        children: [
-          {
-            path: 'new',
-            element: <InterviewSetupFlow />
-          }
-        ]
+        path: 'scorecards',
+        element: <ScorecardsList />
+      },
+      {
+        path: 'scorecards/new',
+        element: <NewScorecard />
+      },
+      {
+        path: 'scorecards/:id',
+        element: <div>Scorecard Details (Coming Soon)</div>
       },
       {
         path: 'reports',
-        children: [
-          {
-            index: true,
-            element: <ReportsOverview />
-          },
-          {
-            path: ':reportId',
-            element: <InterviewReportPage />
-          }
-        ]
+        element: <ReportsOverviewPage />
+      },
+      {
+        path: 'reports/:id',
+        element: <SummaryReportView />
       },
       {
         path: 'team',
-        element: <TeamDashboard />
+        element: <TeamOverview />
       },
       {
-        path: 'hiring',
-        element: <HiringLayout />,
-        errorElement: <ErrorBoundary />,
-        children: [
-          {
-            path: 'criteria',
-            element: <JDImportPage />
-          },
-          {
-            path: 'scorecard/new',
-            element: <ScorecardPage />
-          },
-          {
-            path: 'scorecard/:scorecardId',
-            element: <ScorecardPage />
-          },
-          {
-            path: 'roles/:roleId',
-            element: <div>Role Details</div>
-          }
-        ]
+        path: 'messages',
+        element: <div>Messages (Coming Soon)</div>
+      },
+      {
+        path: 'settings',
+        element: <div>Settings (Coming Soon)</div>
       }
     ]
   },
   {
-    path: '/hiring/jd-import',
-    element: <JDImportPage />,
-    errorElement: <ErrorBoundary />,
+    path: '/app/*',
+    element: <Navigate to="/dashboard" replace />
   },
+  {
+    path: '*',
+    element: <div>Page not found</div>
+  }
 ]); 

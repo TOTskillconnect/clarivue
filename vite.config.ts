@@ -21,4 +21,12 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    include: ['antd', '@ant-design/icons'],
+  },
+  build: {
+    rollupOptions: {
+      external: [],
+    },
+  },
 }); 

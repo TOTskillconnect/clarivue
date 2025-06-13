@@ -1,5 +1,37 @@
 export type ReportType = 'fit' | 'risk' | 'alignment' | 'stage';
 
+export interface ReportFilters {
+  role?: string;
+  interviewer?: string;
+  dateRange?: string;
+  stage?: string;
+  tags?: string[];
+}
+
+export interface ReportTableItem {
+  id: string;
+  name: string;
+  role: string;
+  lastUpdated: string;
+  type: string;
+  tags: string[];
+}
+
+export interface SmartReportCardData {
+  id: string;
+  title: string;
+  description: string;
+  type: ReportType;
+  summary: string;
+  trend?: 'up' | 'down' | 'stable';
+  alert?: boolean;
+  metrics?: {
+    confidenceScore?: number;
+    alignmentScore?: number;
+    riskLevel?: 'low' | 'medium' | 'high';
+  };
+}
+
 export interface Report {
   id: string;
   title: string;

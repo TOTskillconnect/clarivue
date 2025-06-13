@@ -10,7 +10,8 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "buildCommand": "vite build"
+        "buildCommand": "vite build",
+        "installCommand": "npm install --legacy-peer-deps"
       }
     }
   ],

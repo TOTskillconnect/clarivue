@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
-import ReactWordcloud, { Scale, Options } from 'react-wordcloud';
+import { TagCloud } from 'react-tagcloud';
 
 interface WordCloudProps {
   words: Array<{
@@ -13,20 +13,9 @@ interface WordCloudProps {
   onRegenerate: () => void;
 }
 
-const options: Partial<Options> = {
-  colors: ['#04ADA4', '#7FDCD7', '#ACBAFF', '#6B7CFF'],
-  enableTooltip: true,
-  deterministic: false,
-  fontFamily: 'inter',
-  fontSizes: [12, 40] as [number, number],
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  padding: 3,
-  rotations: 2,
-  rotationAngles: [0, 0] as [number, number],
-  scale: 'sqrt' as Scale,
-  spiral: 'rectangular' as const,
-  transitionDuration: 1000,
+const options = {
+  luminosity: 'light' as const,
+  hue: 'blue' as const,
 };
 
 export const WordCloudCard: React.FC<WordCloudProps> = ({
@@ -41,16 +30,16 @@ export const WordCloudCard: React.FC<WordCloudProps> = ({
     // Add the main word
     variations.push({
       text: word.text,
-      value: baseValue,
-      relevance: word.relevance,
+      value: baseValue.toString(), // Convert to string as required by react-tagcloud
+      count: baseValue,
     });
 
     // Add related technical terms if the value is high enough
     if (baseValue > 7) {
       variations.push({
         text: `${word.text} skills`,
-        value: Math.floor(baseValue * 0.8),
-        relevance: word.relevance * 0.9,
+        value: Math.floor(baseValue * 0.8).toString(),
+        count: Math.floor(baseValue * 0.8),
       });
     }
 
@@ -58,8 +47,8 @@ export const WordCloudCard: React.FC<WordCloudProps> = ({
     if (baseValue > 5) {
       variations.push({
         text: `${word.text} experience`,
-        value: Math.floor(baseValue * 0.7),
-        relevance: word.relevance * 0.8,
+        value: Math.floor(baseValue * 0.7).toString(),
+        count: Math.floor(baseValue * 0.7),
       });
     }
 
@@ -67,13 +56,28 @@ export const WordCloudCard: React.FC<WordCloudProps> = ({
     if (word.relevance > 0.7) {
       variations.push({
         text: `${word.text} expertise`,
-        value: Math.floor(baseValue * 0.6),
-        relevance: word.relevance * 0.7,
+        value: Math.floor(baseValue * 0.6).toString(),
+        count: Math.floor(baseValue * 0.6),
       });
     }
 
     return variations;
   });
+
+  const customRenderer = (tag: any, size: number, color: string) => (
+    <span
+      key={tag.text}
+      style={{
+        fontSize: `${size}px`,
+        margin: '3px',
+        padding: '3px',
+        display: 'inline-block',
+        color: color,
+      }}
+    >
+      {tag.text}
+    </span>
+  );
 
   return (
     <Card>
@@ -90,10 +94,13 @@ export const WordCloudCard: React.FC<WordCloudProps> = ({
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
-          <ReactWordcloud
-            words={enhancedWords}
-            options={options}
+        <div className="h-[300px] w-full overflow-hidden">
+          <TagCloud
+            minSize={12}
+            maxSize={35}
+            tags={enhancedWords}
+            renderer={customRenderer}
+            colorOptions={options}
           />
         </div>
       </CardContent>
