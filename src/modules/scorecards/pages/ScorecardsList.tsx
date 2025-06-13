@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -6,6 +6,7 @@ import { scorecardStorage, type Scorecard } from '@/lib/storage/scorecard';
 import { ScorecardCard } from '../components/ScorecardCard';
 import { EmptyState } from '@/components/ui/empty-state';
 import { useToast } from '@/hooks/use-toast';
+import { clarivueColors } from '@/theme';
 
 export function ScorecardsList() {
   const navigate = useNavigate();
@@ -13,15 +14,24 @@ export function ScorecardsList() {
   const { toast } = useToast();
   const [scorecards, setScorecards] = useState<Scorecard[]>([]);
 
+  const loadScorecards = useCallback(() => {
+    const loadedScorecards = scorecardStorage.getAll();
+    setScorecards(loadedScorecards);
+  }, []);
+
   // Load scorecards and handle navigation state
   useEffect(() => {
     // Load scorecards from local storage
-    const loadedScorecards = scorecardStorage.getAll();
-    setScorecards(loadedScorecards);
+    loadScorecards();
+  }, [loadScorecards]); // Only run once on mount for loading scorecards
 
-    // Show success message if navigating from create flow
+  // Handle navigation state separately
+  useEffect(() => {
     const state = location.state as { message?: string; scorecardId?: string } | null;
     if (state?.message) {
+      // Reload scorecards to ensure we have the latest data
+      loadScorecards();
+      
       toast({
         title: 'Success',
         description: state.message,
@@ -30,7 +40,7 @@ export function ScorecardsList() {
       // Clear the navigation state
       navigate(location.pathname, { replace: true });
     }
-  }, [location, navigate, toast]);
+  }, [location.state, location.pathname, navigate, toast, loadScorecards]); // This effect only handles navigation state
 
   // Sort scorecards by creation date (newest first)
   const sortedScorecards = [...scorecards].sort((a, b) => 
@@ -38,15 +48,20 @@ export function ScorecardsList() {
   );
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8" style={{ background: clarivueColors.gray[50] }}>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Interview Scorecards</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-3xl font-bold" style={{ color: clarivueColors.gray[800] }}>
+            Interview Scorecards
+          </h1>
+          <p style={{ color: clarivueColors.gray[600] }} className="mt-2">
             Manage and create interview scorecards for your hiring process
           </p>
         </div>
-        <Button onClick={() => navigate('/dashboard/scorecards/new')}>
+        <Button 
+          onClick={() => navigate('/dashboard/scorecards/new')}
+          size="lg"
+        >
           <Plus className="w-4 h-4 mr-2" />
           New Scorecard
         </Button>
@@ -57,7 +72,10 @@ export function ScorecardsList() {
           title="No scorecards yet"
           description="Create your first interview scorecard to get started"
           action={
-            <Button onClick={() => navigate('/dashboard/scorecards/new')}>
+            <Button 
+              onClick={() => navigate('/dashboard/scorecards/new')}
+              size="lg"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Create Scorecard
             </Button>

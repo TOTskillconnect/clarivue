@@ -74,6 +74,10 @@ export const router = createBrowserRouter([
         path: 'settings',
         element: <UserSettings />,
       },
+      {
+        path: 'test-route',
+        element: <div>Test Route Works!</div>,
+      },
     ],
   },
   // Catch-all route should be last

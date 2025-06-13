@@ -227,6 +227,21 @@ export function DashboardHome() {
         <Button 
           type="primary" 
           size="large"
+          onClick={() => {
+            console.log('Setup a Call button clicked');
+            console.log('Current URL:', window.location.href);
+            console.log('About to navigate...');
+            
+            // Use React Router navigate
+            navigate('/dashboard/interviews/schedule');
+            
+            console.log('Navigate function called');
+            
+            // Also log the URL after a short delay to see if it changed
+            setTimeout(() => {
+              console.log('URL after navigation:', window.location.href);
+            }, 100);
+          }}
           style={{
             height: '48px',
             padding: '0 24px',
@@ -234,7 +249,7 @@ export function DashboardHome() {
             fontWeight: '600'
           }}
         >
-          Setup Interview
+          Setup a Call
         </Button>
       </div>
 

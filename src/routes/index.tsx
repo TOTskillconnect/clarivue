@@ -5,6 +5,8 @@ import { ReportsOverviewPage } from '@/modules/reports/pages/ReportsOverviewPage
 import { SummaryReportView } from '@/modules/report/pages/SummaryReportView';
 import { ScorecardsList } from '@/modules/scorecards/pages/ScorecardsList';
 import { NewScorecard } from '@/modules/scorecards/pages/NewScorecard';
+import { ScorecardPage } from '@/modules/scorecards/pages/ScorecardPage';
+import { SetupInterview } from '@/modules/interviews/pages/SetupInterview';
 import { TeamMembersTable } from '@/modules/team/components/TeamMembersTable';
 import { useTeamManagement } from '@/modules/team/hooks/useTeamManagement';
 
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
         element: <DashboardHome />
       },
       {
+        path: 'interviews/schedule',
+        element: <SetupInterview />
+      },
+      {
+        path: 'interviews/schedule/:scorecardId',
+        element: <SetupInterview />
+      },
+      {
         path: 'interviews/:id',
         element: <div>Interview Details (Coming Soon)</div>
       },
@@ -58,7 +68,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'scorecards/:id',
-        element: <div>Scorecard Details (Coming Soon)</div>
+        element: <ScorecardPage />
       },
       {
         path: 'reports',

@@ -25,7 +25,10 @@ export const scorecardStorage = {
   getById: (id: string): Scorecard | null => {
     try {
       const scorecards = scorecardStorage.getAll();
-      return scorecards.find(s => s.id === id) || null;
+      console.log('Looking for scorecard with ID:', id, 'in', scorecards.length, 'scorecards');
+      const found = scorecards.find(s => s.id === id) || null;
+      console.log('Found scorecard:', found);
+      return found;
     } catch (error) {
       console.error('Failed to get scorecard from storage:', error);
       return null;
@@ -44,7 +47,17 @@ export const scorecardStorage = {
         updatedAt: now,
       };
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...scorecards, newScorecard]));
+      console.log('Saving scorecard to storage:', newScorecard);
+      const updatedScorecards = [...scorecards, newScorecard];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedScorecards));
+      console.log('Storage updated, total scorecards:', updatedScorecards.length);
+      
+      // Verify the save worked
+      const verification = localStorage.getItem(STORAGE_KEY);
+      const parsed = verification ? JSON.parse(verification) : [];
+      console.log('Verification - stored scorecards count:', parsed.length);
+      console.log('Verification - can find new scorecard:', parsed.find((s: Scorecard) => s.id === newScorecard.id) !== undefined);
+      
       return newScorecard;
     } catch (error) {
       console.error('Failed to save scorecard to storage:', error);
