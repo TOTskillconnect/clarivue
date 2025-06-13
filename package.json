@@ -71,7 +71,8 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "server": "tsx watch src/server/index.ts"
+    "server": "tsx watch src/server/index.ts",
+    "favicon:check": "node scripts/optimize-favicons.js"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

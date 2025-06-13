@@ -1,36 +1,81 @@
 {
   "name": "Clarivue - AI Interview Assistant",
   "short_name": "Clarivue",
-  "description": "AI-powered interview assistant for better hiring decisions",
-  "start_url": "/",
+  "description": "AI-powered interview assistant for better hiring decisions and automated note-taking",
+  "start_url": "/dashboard",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#FFFFFF",
   "theme_color": "#04ADA4",
+  "categories": ["business", "productivity", "utilities"],
   "icons": [
     {
       "src": "/brand/clarivue-favicon/favicon-16x16.png",
       "sizes": "16x16",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "favicon"
     },
     {
       "src": "/brand/clarivue-favicon/favicon-32x32.png",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "favicon"
     },
     {
       "src": "/brand/clarivue-favicon/favicon-96x96.png",
       "sizes": "96x96",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/brand/clarivue-favicon/android-icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/brand/clarivue-favicon/apple-icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/brand/clarivue-favicon/ms-icon-310x310.png",
       "sizes": "310x310",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/clarivue-icon-new.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Schedule Interview",
+      "short_name": "Schedule",
+      "description": "Quickly schedule a new interview",
+      "url": "/dashboard/interviews/schedule",
+      "icons": [
+        {
+          "src": "/brand/clarivue-favicon/favicon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "View Scorecards",
+      "short_name": "Scorecards",
+      "description": "Access your interview scorecards",
+      "url": "/dashboard/scorecards",
+      "icons": [
+        {
+          "src": "/brand/clarivue-favicon/favicon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }
